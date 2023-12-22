@@ -1,0 +1,91 @@
+@media only screen and (min-width: 320px) and (max-width: 415px) {
+  #accordion {
+    height: 998px !important;
+  }
+
+  .card-body tbody tr {
+    font-size: 13px !important;
+  }
+
+  .volver {
+    bottom: 9% !important;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1299px) {
+  #accordion {
+    height: 948px !important;
+  }
+
+  .volver {
+    bottom: 9% !important;
+  }
+
+  .table thead tr th {
+    width: 29% !important;
+  }
+
+  .controlTamTabla {
+    overflow-y: scroll !important;
+    overflow-x: scroll !important;
+    font-size: 13.5px !important;
+  }
+}
+
+@media (min-width: 1300px) and (max-width: 1900px) {
+  #accordion {
+    height: 985px !important;
+  }
+
+  .volver {
+    bottom: 9% !important;
+  }
+
+  .table thead tr th {
+    width: 29% !important;
+  }
+
+  .controlTamTabla {
+    overflow-y: scroll !important;
+    overflow-x: scroll !important;
+    font-size: 13.5px !important;
+  }
+}
+
+.test {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 5em;
+  font-family: Roboto;
+  color: #00695c;
+}
+
+#accordion {
+  margin-left: 2%;
+  margin-right: 2%;
+  overflow-y: scroll;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.volver {
+  position: fixed;
+  bottom: 7%;
+  left: 1%;
+  width: 100%;
+}
+
+.iconoBack {
+  width: 4em;
+  height: 4em;
+  cursor: pointer;
+}
+
+.backIcon {
+  margin-left: 1.5%;
+  margin-top: 1%;
+}
+
+.filaTestFracaso {
+  background-color: rgb(255, 83, 83);
+}

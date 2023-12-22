@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css" media="screen"/>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/commonFunctions.js"></script>
+    <script type="text/javascript" src="js/formFunctions.js"></script>
+    <script type="text/javascript" src="js/validations.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/competenceDetailManagement.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="Locale/Lang_EN.js"></script>
+    <script type="text/javascript" src="Locale/Lang_ES.js"></script>
+    <script type="text/javascript" src="Locale/Lang_GA.js"></script>
+</head>
+
+<body onload="
+(async ()=>{
+    await userRole();
+	loadLang();
+	includeFooter();
+	includeBreadCrumb(['menu', 'subjectManagement', 'subjectDetail', 'competenceDetail']);
+	await loadCompetences();
+	filterButton();
+	setLang('');
+})();">
+<!--MENU-->
+<div id="topMenu"></div>
+
+<!--BREADCRUMB-->
+<nav id="breadcrumb" aria-label="breadcrumb"></nav>
+
+<h1 id="projectDetail" class="gestion"></h1>
+
+<div id="tablaDatos">
+    <!--BOTON FILTRAR-->
+    <div id="btnFiltrar"></div>
+
+    <!--TABLA-->
+    <div>
+        <table class="table table-bordered text-center table-striped" id="tablaCompetencias">
+            <thead class="headerGestionRoles">
+            <!--Título-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn TITULO_COMPETENCIA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(0, 'tablaCompetencias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="btitulo" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--Descripción-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn DESCRIPCION_COMPETENCIA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(1, 'tablaCompetencias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bdescripcion" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--ACCIONES-->
+            <th scope="col" class="ACCIONES">
+                <div class="ACCIONES"></div>
+            </th>
+            </thead>
+            <tbody id="datosEntidades" class="bodyGestionMaterias">
+        </table>
+    </div>
+
+    <!--MODAL ACCIONES-->
+    <div class="modal fade" id="formularioAcciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" id="contenidoForm">
+            <div class="formularioAcciones-container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h1 id="tituloModal"></h1>
+                <form name="formularioGenerico" id="formularioGenerico" action="" onsubmit="">
+                    <div id="datosCompetencia" class="container tab-pane active overflow-auto"><br>
+                        <!-- TITULO -->
+                        <div class="form-group">
+                            <label class="TITULO_COMPETENCIA"></label>
+                            <div class="obligatorio tooltip2" id="obligatorioTitulo">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo obligatorio</span>
+                            </div>
+                            <input type="text" name="titulo" id="tituloC" placeholder="Titulo"
+                                   class="TITULO_COMPETENCIA form-control" minLength="3" maxlength="60" size="60">
+                            <div style="display:none" id="errorFormatCompetenceTitle"></div>
+                        </div>
+
+                        <!-- DESCRIPCION_COMPETENCIA -->
+                        <div class="form-group">
+                            <label class="DESCRIPCION_COMPETENCIA"></label>
+                            <div class="obligatorio tooltip2" id="obligatorioDescripcion">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo obligatorio</span>
+                            </div>
+                            <textarea rows="4" cols="50" name="descripcion"
+                                      class="form-control" id="descripcionC"></textarea>
+                            <div style="display:none" id="errorFormatCompetenceDescription"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="btnAcciones" value="" class="tooltip6" id="btnAcciones">
+                        <img class="" src="" alt="" id="iconoAcciones" />
+                        <span class="tooltiptext" id="spanAcciones"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL VER PERFIL-->
+    <div class="modal modal3 fade" id="viewProfile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog"></div>
+    </div>
+
+    <!--MODAL CAMBIO CONTRASEÑA-->
+    <div class="modal modal3 fade" id="changePass-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+    </div>
+
+    <!--MODAL ALERTAS-->
+    <div id="modal" tabindex="-1" role="dialog" style="display:none">
+        <div class="modal-dialog" role="document" id="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="" name="aviso" class="imagenAviso"/>
+                    <h3 id="modal-title" class="modal-title"></h3>
+                </div>
+                <div id='modal-mensaje' class="modal-body"></div>
+                <div class="modal-footer">
+                    <a id="close" href="#" onclick="closeModal('modal'); loadCompetences();" class="tooltip5">
+                        <img class="closeIcon" alt="Cerrar" src="Resources/close.png"/>
+                        <span class="tooltiptext5 ICONO_CERRAR"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div class="modal fade" id="myModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
+            <div class="formularioAcciones-container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p id="deleteMsg"></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary ICONO_CERRAR" data-dismiss="modal"></button>
+                    <button type="button" id="btnDelete" class="btn btn-danger ELIMINAR_COMPETENCIA"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="filasTabla">
+    <div id="contadorPaginas"></div>
+</div>
+
+<div class="paginacion" id="paginacion">
+</div>
+
+<div id="footer"></div>
+</body>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Last-Modified" content="0">
+	<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<!-- Scripts -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/menu.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/common.css" media="screen" />
+
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="js/constants.js"></script>
+	<script type="text/javascript" src="js/commonFunctions.js"></script>
+	<script type="text/javascript" src="js/formFunctions.js"></script>
+	<script type="text/javascript" src="js/validations.js"></script>
+	<script type="text/javascript" src="js/register.js"></script>
+	<script type="text/javascript" src="js/lang.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+	<script type="text/javascript" src="js/register.js"></script>
+	<script type="text/javascript" src="js/userManagement.js"></script>
+	<script type="text/javascript" src="js/pagination.js"></script>
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="Locale/Lang_EN.js"></script>
+	<script type="text/javascript" src="Locale/Lang_ES.js"></script>
+	<script type="text/javascript" src="Locale/Lang_GA.js"></script>
+</head>
+
+<body onload="
+(async ()=>{
+    await userRole();
+	loadLang(); 
+	includeFooter();
+	includeBreadCrumb(['menu', 'userManagement']);
+    await loadUserData();
+    fillSelectRole();
+	addButton();
+	setLang('');
+})();">
+	<!--MENU-->
+	<div id="topMenu"></div>
+
+	<!--BREADCRUMB-->
+	<nav id="breadcrumb" aria-label="breadcrumb"></nav>
+
+	<h1 class="gestion GESTION_USUARIO"></h1>
+
+	<div id="tablaDatos">
+		<!--BOTON AÑADIR-->
+		<div id="btnAdd"></div>
+
+		<!--TABLA-->
+		<div>
+			<table class="table table-bordered table-striped text-center" id="tablaUsuarios">
+				<thead class="headerGestionRoles">
+					<!--DNI-->
+					<th scope="col">
+						<div class="dniUsuarioColumn DNI"></div>
+						<div name="btnOrdenar" value="Ordenar" onclick="sortTable(0, 'tablaUsuarios')" class="tooltip7">
+							<img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar" />
+							<span class="tooltiptext ORDENAR"></span>
+						</div>
+						<div>
+							<input type="text" id="bdni" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+						</div>
+					</th>
+					<!--NOMBRE-->
+					<th scope="col">
+						<div class="nombreUsuarioColumn NOMBRE_PERSONA"></div>
+						<div name="btnOrdenar" value="Ordenar" onclick="sortTable(1, 'tablaUsuarios')" class="tooltip7">
+							<img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar" />
+							<span class="tooltiptext ORDENAR"></span>
+						</div>
+						<div>
+							<input type="text" id="bnombre" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+						</div>
+					</th>
+					<!--APELLIDOS-->
+					<th scope="col">
+						<div class="apellidosUsuarioColumn APELLIDOS_PERSONA"></div>
+						<div name="btnOrdenar" value="Ordenar" onclick="sortTable(2, 'tablaUsuarios')" class="tooltip7">
+							<img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar" />
+							<span class="tooltiptext ORDENAR"></span>
+						</div>
+						<div>
+							<input type="text" id="bapellidos" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+						</div>
+					</th>
+					<!--ROL-->
+					<th scope="col">
+						<div class="rolUsuarioColumn ROL"></div>
+						<div name="btnOrdenar" value="Ordenar" onclick="sortTable(3, 'tablaUsuarios')" class="tooltip7">
+							<img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar" />
+							<span class="tooltiptext ORDENAR"></span>
+						</div>
+						<div>
+							<input type="text" id="brol" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+						</div>
+					</th>
+					<!--ACCIONES-->
+					<th scope="col" class="ACCIONES">
+						<div class="ACCIONES"></div>
+					</th>
+				</thead>
+				<tbody id="datosEntidades" class="bodyGestionUsuarios">
+			</table>
+		</div>
+
+		<!--MODAL AÑADIR USUARIO-->
+		<div class="modal modal2 fade" id="registro-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true" style="display: none;">
+			<div class="modal-dialog modal-lg">
+				<div class="registromodal-container">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h1 class="ANADIR_USUARIO"></h1>
+					<form name="formularioRegistro" id="formularioRegistro" action="javascript:addUser()"
+						onsubmit="return checkRegister()">
+						<div class="tab-content">
+							<div id="datosPersonales" class="container tab-pane active overflow-auto"><br>
+								<!--DNI-->
+								<div class="form-group">
+									<label class="DNI"></label>
+									<div class="obligatorio tooltip2" id="obligatorioDNI">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="dni" placeholder="DNI" id="dniP"
+										class="dni FORMATO_DNI form-control" maxlength="9" size="9"
+										onblur="return checkUserDNI('dniP', 'errorFormatDni', 'personDni')">
+
+									<div style="display:none" id="errorFormatDni"></div>
+								</div>
+
+								<!--NOMBRE-->
+								<div class="form-group">
+									<label class="NOMBRE_PERSONA"></label>
+									<div class="obligatorio tooltip2" id="obligatorioNombre">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="nombre" id="nombreP" placeholder="Nombre"
+										class="NOMBRE_PERSONA form-control" maxlength="45" size="45"
+										onblur="return checkName('nombreP', 'errorFormatNamePerson', 'namePersonRegister')">
+									<div style="display:none" id="errorFormatNamePerson"></div>
+								</div>
+
+								<!--APELLIDOS-->
+								<div class="form-group">
+									<label class="APELLIDOS_PERSONA"></label>
+									<div class="obligatorio tooltip2" id="obligatorioApellidos">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="apellidos_usuario" id='apellidosP' placeholder="Apellidos"
+										class="APELLIDOS_PERSONA form-control"
+										onblur="return checkSurname('apellidosP', 'errorFormatSurnameP', 'surnamePersonRegister');">
+									<div style="display:none" id="errorFormatSurnameP"></div>
+								</div>
+
+								<!--FECHA NACIMIENTO-->
+								<div class="form-group">
+									<label class="FECHA_NAC"></label>
+									<div class="obligatorio tooltip2" id="obligatorioFechaNac">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="date" name="fecha_nac" id='fechaNacP' value="1900-01-01"
+										min="1900-01-01" max="3000-01-01" class="form-control"
+										onblur="return checkBirthDate('fechaNacP', 'errorFormatDate', 'datePersonRegister');">
+									<div style="display:none" id="errorFormatDate"></div>
+								</div>
+
+								<!--DIRECCION-->
+								<div class="form-group">
+									<label class="DIRECCION_PERSONA"></label>
+									<div class="obligatorio tooltip2" id="obligatorioDireccion">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="direccion" id='direccionP' placeholder="Direccion"
+										class="DIRECCION_PERSONA form-control" maxlength="200" size="200"
+										onblur="return checkAddress('direccionP', 'errorFormatAddress', 'addressPersonRegister');">
+									<div style="display:none" id="errorFormatAddress"></div>
+								</div>
+
+								<!--ROL-->
+								<div class="form-group">
+									<label class="ROL"></label>
+									<div class="obligatorio tooltip2" id="obligatorioRol">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<div class="obligatorio tooltip2" id="obligatorioRol" style="display:none">*
+										<span class="tooltiptext2 CAMPO_OBLIGATORIO"></span>
+									</div>
+									<select name='id_rol' id='select_id_rol' class="form-control"></select>
+									<div id="errorFormatoCategoriaPadre" style="display:none"></div>
+								</div>
+
+								<!--TELEFONO-->
+								<div class="form-group">
+									<label class="TELEFONO"></label>
+									<div class="obligatorio tooltip2" id="obligatorioTelefono">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="tel" name="telefono" id='telefonoP' pattern="[0-9]{3}[0-9]{3}[0-9]{3}"
+										maxlength="9" size="9" class="form-control FORMATO_TELF"
+										onblur="return checkPhone('telefonoP', 'errorFormatPhone', 'phonePersonRegister');">
+									<div style="display:none" id="errorFormatPhone"></div>
+								</div>
+
+								<!--EMAIL-->
+								<div class="form-group">
+									<label class="EMAIL"></label>
+									<div class="obligatorio tooltip2" id="obligatorioEmail">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="email" name="email" id="emailP" placeholder="Email"
+										class="EMAIL_USUARIO form-control" maxlength="40" size="40"
+										onblur="return checkEmail('emailP', 'errorFormatEmail', 'emailPersonRegister');">
+									<small class="FORMATO_EMAIL"></small>
+									<div style="display:none" id="errorFormatEmail"></div>
+								</div>
+
+								<!--CONTRASEÑA-->
+								<div class="form-group">
+									<label class="PASS_USUARIO"></label>
+									<div class="obligatorio tooltip2" id="obligatorioPass1">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="password" name="password" id="passwdUsuario1" placeholder="Contraseña"
+										class="PASS_USUARIO form-control" maxlength="45" size="45"
+										onKeyPress="capLock(event, 'bloqueoMayusculasRegistro');"
+										onblur="return checkPass('passwdUsuario1', 'errorFormatoPassRegistro', 'passwdUserRegister');"
+										autocomplete="new-password">
+									<div style="display:none" id="errorFormatoPassRegistro"></div>
+								</div>
+
+								<!--REPETIR CONTRASEÑA-->
+								<div class="form-group">
+									<label class="CONFIRMAR_PASS_USUARIO"></label>
+									<div class="obligatorio tooltip2" id="obligatorioPass2">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="password" name="confirmarPass" id="passwdUsuario2"
+										placeholder="ConfirmarContraseña" class="CONFIRMAR_PASS_USUARIO form-control"
+										maxlength="45" size="45"
+										onKeyPress="capLock(event, 'bloqueoMayusculasRegistro');"
+										onblur="return checkPassRep('passwdUsuario2', 'errorFormatPassRegister2', 'passwdUserRegister');"
+										autocomplete="new-password">
+								</div>
+								<div style="display:none" id="errorFormatPassRegister2"></div>
+								<div style="display:none" class="BLOQUEO_MAYUSCULAS alert alert-warning"
+									id="bloqueoMayusculasRegistro"></div>
+								<div id="error" class="alert alert-danger ocultar" role="alert"
+									class="CONTRASEÑAS_NO_COINCIDEN"></div>
+							</div>
+						</div>
+
+						<button type="submit" name="btnRegistrar" value="Registrar" class="btnRegistrar tooltip3">
+							<img class="iconoRegistrar iconRegistrar white-icon" src="Resources/registrar3.png" alt="Registrar" />
+							<span class="tooltiptext3 ANADIR_USUARIO"></span>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!--MODAL ACCIONES-->
+		<div class="modal fade" id="formularioAcciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true" style="display: none;">
+			<div class="modal-dialog" id="contenidoForm">
+				<div class="formularioAcciones-container">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h1 id="tituloModal"></h1>
+					<form name="formularioGenerico" id="formularioGenerico" action="" onsubmit="">
+						<div id="datosPersonales" class="container tab-pane active overflow-auto"><br>
+							<!--DNI-->
+							<div class="form-group">
+								<label class="USUARIO_DNI" id="label_usuario_dni" style="display:none"></label>
+								<div class="obligatorio tooltip2" id="obligatorio_usuario_dni" style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+								</div>
+								<input type="text" maxlength="48" placeholder="" name="dni" id="input_dni_usuario"
+									style="display:none" class="USUARIO_DNI dni form-control" onblur="" />
+								<small class="FORMATO_DNI" id="ayudaDNI"></small>
+								<div id="errorFormatoDni" style="display:none"></div>
+							</div>
+							<!--NOMBRE-->
+							<div class="form-group">
+								<label class="USUARIO_NOMBRE" id="label_usuario_nombre" style="display:none"></label>
+								<div class="obligatorio tooltip2" id="obligatorio_usuario_nombre" style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+								</div>
+								<input type="text" maxlength="48" placeholder="" name="nombre" id="input_nombre_usuario"
+									style="display:none" class="USUARIO_NOMBRE form-control" onblur="" />
+								<div id="errorFormatoNombre" style="display:none"></div>
+							</div>
+							<!--APELLIDOS-->
+							<div class="form-group">
+								<label class="USUARIO_APELLIDOS" id="label_usuario_apellidos"
+									style="display:none"></label>
+								<div class="obligatorio tooltip2" id="obligatorio_usuario_apellidos"
+									style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+								</div>
+								<input type="text" maxlength="48" placeholder="" name="apellidos_usuario"
+									id="input_apellidos_usuario" style="display:none"
+									class="USUARIO_APELLIDOS form-control" onblur="" />
+								<div id="errorFormatoApellidos" style="display:none"></div>
+							</div>
+							<!--FECHA NACIMIENTO-->
+							<div class="form-group">
+								<label class="USUARIO_FECHANACIMIENTO" id="label_usuario_fechaNacimiento"
+									style="display:none"></label>
+								<div class="obligatorio tooltip2" id="obligatorio_usuario_fechaNacimiento"
+									style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+								</div>
+								<input type="date" value="1900-01-01" min="1900-01-01" max="3000-01-01" placeholder=""
+									name="fecha_nac" id="input_fechaNacimiento_usuario" style="display:none"
+									class="USUARIO_FECHANACIMIENTO form-control" onblur="" />
+								<div id="errorFormatoFecha" style="display:none"></div>
+							</div>
+							<!--DIRECCION-->
+							<div class="form-group">
+								<label class="USUARIO_DIRECCION" id="label_usuario_direccion"
+									style="display:none"></label>
+								<div class="obligatorio tooltip2" id="obligatorio_usuario_direccion"
+									style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+								</div>
+								<input type="text" maxlength="48" placeholder="" name="direccion"
+									id="input_direccion_usuario" style="display:none"
+									class="USUARIO_DIRECCION form-control" onblur="" />
+								<div id="errorFormatoDireccion" style="display:none"></div>
+							</div>
+							<!--TELEFONO-->
+							<div class="form-group">
+								<label class="USUARIO_TELEFONO" id="label_usuario_telefono"
+									style="display:none"></label>
+								<div class="obligatorio tooltip2" id="obligatorio_usuario_telefono"
+									style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+								</div>
+								<input type="tel" name="telefono" id='input_telefono_usuario' placeholder="988212121"
+									pattern="[0-9]{3}[0-9]{3}[0-9]{3}" maxlength="9" size="9"
+									class="USUARIO_TELEFONO form-control" onblur="">
+								<small class="FORMATO_TELF" id="ayudaTEL"></small>
+								<div id="errorFormatoTelefono" style="display:none"></div>
+							</div>
+							<!--EMAIL-->
+							<div class="form-group">
+								<label class="USUARIO_EMAIL" id="label_usuario_email" style="display:none"></label>
+								<div class="obligatorio tooltip2" id="obligatorio_usuario_email" style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+								</div><small class="FORMATO_EMAIL" id="ayudaEMAIL"></small>
+								<input type="email" name="email" id="input_email_usuario" placeholder="Email"
+									class="EMAIL_USUARIO form-control" maxlength="40" size="40" onblur="">
+								<div id="errorFormatoEmail" style="display:none"></div>
+							</div>
+							<!--ROL-->
+							<div class="form-group">
+								<label class="USUARIO_ROL" id="label_usuario_rol" style="display:none"></label>
+								<input type="text" maxlength="48" size="15" placeholder="" name="nombre_rol"
+									id="input_rol_usuario" style="display:none" class="USUARIO_ROL form-control"
+									onblur="" />
+								<input type="text" maxlength="48" size="15" placeholder="" name="id_rol"
+									id="input_id_rol_usuario" style="display:none" class="USUARIO_ROL form-control"
+									onblur="" />
+								<select name='id_rol' id='select_id_rol' style="display:none"></select>
+							</div>
+							<!--CONTRASEÑA-->
+							<div class="form-group">
+								<input type="password" name="contrasena" id="passwdUsuario1" placeholder="Contraseña"
+									class="PASS_USUARIO" maxlength="45" size="45"
+									onKeyPress="capLock(event, 'bloqueoMayusculasRegistro');" onblur=""
+									autocomplete="new-password" style="display:none">
+								<div class="obligatorio tooltip2" id="obligatorioPass1" style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"
+										style="display:none">Campo
+										obligatorio</span>
+								</div>
+								<div style="display:none" id="errorFormatoPassRegistro"></div>
+							</div>
+
+							<!--REPETIR CONTRASEÑA-->
+							<div class="form-group">
+								<input type="password" name="confirmarPass" id="passwdUsuario2"
+									placeholder="ConfirmarContraseña" class="CONFIRMAR_PASS_USUARIO" maxlength="45"
+									size="45" onKeyPress="capLock(event, 'bloqueoMayusculasRegistro');" onblur=""
+									autocomplete="new-password" style="display:none">
+								<div class="obligatorio tooltip2" id="obligatorioPass2" style="display:none">*
+									<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"
+										style="display:none">Campo
+										obligatorio</span>
+								</div>
+								<div style="display:none" id="errorFormatoPassRegistro2"></div>
+							</div>
+							<div style="display:none" class="BLOQUEO_MAYUSCULAS alert alert-warning"
+								id="bloqueoMayusculasRegistro"></div>
+
+							<div id="error" class="alert alert-danger ocultar" role="alert"
+								class="CONTRASEÑAS_NO_COINCIDEN"></div>
+						</div>
+
+
+						<button type="submit" name="btnAcciones" value="" class="tooltip6" id="btnAcciones">
+							<img class="" src="" alt="" id="iconoAcciones" />
+							<span class="tooltiptext" id="spanAcciones"></span>
+						</button>
+
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!--MODAL VER PERFIL-->
+		<div class="modal modal3 fade" id="viewProfile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true" style="display: none;">
+			<div class="modal-dialog"></div>
+		</div>
+		
+		<!--MODAL CAMBIO CONTRASEÑA-->
+		<div class="modal modal3 fade" id="changePass-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true" style="display: none;">
+		</div>
+
+		<!--MODAL ALERTAS-->
+		<div id="modal" tabindex="-1" role="dialog" style="display:none">
+			<div class="modal-dialog" role="document" id="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<img src="" name="aviso" class="imagenAviso" />
+						<h3 id="modal-title" class="modal-title"></h3>
+					</div>
+					<div id='modal-mensaje' class="modal-body"></div>
+					<div class="modal-footer">
+						<a id="close" href="#" onclick="closeModal('modal'); loadUserData();" class="tooltip5">
+							<img class="closeIcon" alt="Cerrar" src="Resources/close.png" />
+							<span class="tooltiptext5 ICONO_CERRAR"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- MODAL DELETE -->
+	<div class="modal fade" id="myModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+			<div class="modal-dialog">
+				<div class="formularioAcciones-container">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<p id="deleteMsg"></p>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary ICONO_CERRAR" data-dismiss="modal"></button>
+						<button type="button" id="btnDelete" class="btn btn-danger ELIMINAR_USUARIO"></button>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+
+	<div class="filasTabla">
+        <div id="contadorPaginas"></div>
+    </div>
+
+    <div class="paginacion" id="paginacion">
+    </div>
+
+	<div id="footer"></div>
+</body>

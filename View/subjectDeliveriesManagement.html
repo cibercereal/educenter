@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css" media="screen"/>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+    <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/commonFunctions.js"></script>
+    <script type="text/javascript" src="js/formFunctions.js"></script>
+    <script type="text/javascript" src="js/validations.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/subjectDeliveriesManagement.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="Locale/Lang_EN.js"></script>
+    <script type="text/javascript" src="Locale/Lang_ES.js"></script>
+    <script type="text/javascript" src="Locale/Lang_GA.js"></script>
+</head>
+
+<body onload="
+(async ()=>{
+    await userRole();
+	loadLang();
+	includeFooter();
+	includeBreadCrumb(['menu', 'subjectManagement', 'subjectDetail', 'subjectDeliveriesManagement']);
+	await loadAssignedCorrections();
+	await loadDeliveries();
+	filterButton();
+	setLang('');
+})();">
+<!--MENU-->
+<div id="topMenu"></div>
+
+<!--BREADCRUMB-->
+<nav id="breadcrumb" aria-label="breadcrumb"></nav>
+<h1 id="projectDetail" class="gestion"></h1>
+
+<div id="tablaDatos">
+
+    <!--BOTON ASIGNAR AUTOMÁTICO-->
+    <div id="btnAssignRandom"></div>
+
+    <h2 class="text-center ENTREGAS"></h2>
+    <!--BOTON FILTRAR-->
+    <div id="btnFilter"></div>
+    <!--TABLA TRABAJOS-->
+    <div>
+        <table class="table table-bordered text-center table-striped" id="tablaEntregas">
+            <thead class="headerGestionRoles">
+            <!--DNI-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn USUARIO_DNI"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(0, 'tablaEntregas')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bdni" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!-- Nombre persona -->
+            <th scope="col">
+                <div class="nombreUsuarioColumn NOMBRE_PERSONA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(1, 'tablaEntregas')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bnombre" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!-- Apellidos persona -->
+            <th scope="col">
+                <div class="nombreUsuarioColumn USUARIO_APELLIDOS"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(2, 'tablaEntregas')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bapellidos" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!-- Fecha entrega -->
+            <th scope="col">
+                <div class="nombreUsuarioColumn FECHA_ENTREGA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(3, 'tablaEntregas')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bfechaentrega" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--ACCIONES-->
+            <th scope="col" class="ACCIONES">
+                <div class="ACCIONES"></div>
+            </th>
+            </thead>
+            <tbody id="datosEntidades" class="bodyGestionEntregas">
+        </table>
+    </div>
+
+    <!--MODAL ASIGNAR AUTOMÁTICO-->
+    <div class="modal modal2 fade" id="assignRandom-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="registromodal-container">
+                <h1 class="ASIGNAR_AUTOMATICO"></h1>
+                <form name="formAssignRandomCorrection" id="formAssignRandomCorrection" action="javascript:assignRandomCorrection()"
+                      onsubmit="return checkAssignRandomCorrection()">
+                    <div class="tab-content">
+                        <div id="datosAssignRandom" class="container tab-pane active overflow-auto"><br>
+                            <!--NÚMERO ALUMNOS-->
+                            <div class="form-group">
+                                <label class="NUMERO_GRUPOS"></label>
+                                <div class="obligatorio tooltip2" id="obligatorioNumAlumnos">*
+                                    <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+                                </div>
+                                <input type="number" name="numero_alumnos" id="numeroAlumnos"
+                                       class="dni form-control" min="1" size="2" max="99"
+                                       onblur="return checkNumAlumnos('numeroAlumnos', 'errorNumAlumnos', 'numAlumnos')">
+                                <div style="display:none" id="errorNumAlumnos"></div>
+                            </div>
+                            <!-- FECHA FIN CORRECCION -->
+                            <div class="form-group">
+                                <label class="FECHA_FIN_CORRECCION" id="label_fecha_fin_correccionRandom"></label>
+                                <div class="obligatorio tooltip2" id="obligatorio_fecha_fin_correccion_random">*
+                                    <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                                </div>
+                                <input type="date" maxlength="48" placeholder="" name="fecha_fin_correccion" id="input_fecha_fin_correccionRandom"
+                                    class="FECHA_ENTREGA form-control" onblur="return checkEndDateCorrection('input_fecha_fin_correccionRandom', 'errorFormatFechaFinCorreccionRandom', 'endDateCorrection')" />
+                                <div id="errorFormatFechaFinCorreccionRandom" style="display:none"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="btnRegistrar" value="Registrar" class="btnRegistrar tooltip3">
+                        <img class="iconoRegistrar iconRegistrar" src="Resources/registrar3.png" alt="Registrar" />
+                        <span class="tooltiptext3 ANADIR_USUARIO"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--MODAL ACCIONES-->
+    <div class="modal fade" id="formularioAcciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" id="contenidoForm">
+            <div class="formularioAcciones-container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <form name="formularioGenerico" id="formularioGenerico" action="" onsubmit="">
+                    <div id="datosTrabajo" class="container tab-pane active overflow-auto"><br>
+                        <!-- FECHA_ENTREGA -->
+                        <div class="form-group">
+                            <label class="FECHA_ENTREGA" id="label_fecha_entrega" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_fecha_entrega" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="date" maxlength="48" placeholder="" name="fecha_entrega" id="input_fecha_entrega"
+                                   style="display:none" class="FECHA_ENTREGA form-control" onblur="" />
+                            <div id="errorFormatFechaEntrega" style="display:none"></div>
+                        </div>
+                        <!-- NOMBRE_TRABAJO -->
+                        <div class="form-group">
+                            <label class="NOMBRE_TRABAJO" id="label_nombre_trabajo" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_nombre_trabajo" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="text" name="nombre_trabajo" id="input_nombre_trabajo"
+                                   style="display:none" class="NOMBRE_TRABAJO form-control" onblur=""/>
+                            <div id="errorFormatNombreTrabajo" style="display:none"></div>
+                        </div>
+                        <!-- DESCRIPCION_TRABAJO -->
+                        <div class="form-group">
+                            <label class="DESCRIPCION_TRABAJO" id="label_descripcion_trabajo" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_descripcion_trabajo" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <textarea rows="4" cols="50" name="descripcion_trabajo" id="input_descripcion_trabajo"
+                                      style="display:none" class="DESCRIPCION_TRABAJO form-control" onblur=""></textarea>
+                            <div id="errorFormatDescripcionTrabajo" style="display:none"></div>
+                        </div>
+                        <!-- ALUMNOS -->
+                        <div class="form-group">
+                            <div class="info"><label class="ALUMNOS" id="label_alumno" style="display:none"></label><img src="./Resources/ayuda.png" alt="Icono" class="icon" id="icon"><span class="tooltiptext ICONO_INFO_SELECT_MULT pointer"></span></div>
+                            <select class="multiple" name='dni_alumno' id='input_alumno' style="display:none" multiple></select>
+                            <div id="errorFormatAlumno" style="display:none"></div>
+                        </div>
+                        <!-- FECHA FIN CORRECCION -->
+                        <div class="form-group">
+                            <label class="FECHA_FIN_CORRECCION" id="label_fecha_fin_correccion" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_fecha_fin_correccion" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="date" maxlength="48" placeholder="" name="fecha_fin_correccion" id="input_fecha_fin_correccion"
+                                   style="display:none" class="FECHA_ENTREGA form-control" onblur="" />
+                            <div id="errorFormatFechaFinCorreccion" style="display:none"></div>
+                        </div>
+                    </div>
+                    <!-- LINK DESCARGA -->
+                    <a id="descargarEnlace" href="#" class="DESCARGAR" style="display:none">Descargar</a>
+
+                    <button type="submit" name="btnAcciones" value="" class="tooltip6" id="btnAcciones">
+                        <img class="" src="" alt="" id="iconoAcciones" />
+                        <span class="tooltiptext" id="spanAcciones"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL CORREGIR CORRECCIONES-->
+    <div class="modal fade" id="formularioCorregirCorrecciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
+        <div class="modal-dialog modal-dialog2" id="contenidoForm1">
+            <div class="formularioAcciones-container formularioAcciones-container2">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeEntityModal(); loadAssignedCorrections(); loadDeliveries();">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <form name="formularioGenerico" id="formularioGenerico1" action="" onsubmit="">
+                    <div id="datosMateria" class="container tab-pane active overflow-auto"><br>
+                    </div>
+
+                    <button type="submit" name="btnAcciones" value="" class="tooltip6" id="btnAcciones1">
+                        <img class="" src="" alt="" id="iconoAcciones1" />
+                        <span class="tooltiptext" id="spanAcciones1"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL VER PERFIL-->
+    <div class="modal modal3 fade" id="viewProfile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog"></div>
+    </div>
+
+    <!--MODAL CAMBIO CONTRASEÑA-->
+    <div class="modal modal3 fade" id="changePass-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+    </div>
+
+    <!--MODAL ALERTAS-->
+    <div id="modal" tabindex="-1" role="dialog" style="display:none">
+        <div class="modal-dialog" role="document" id="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="" name="aviso" class="imagenAviso"/>
+                    <h3 id="modal-title" class="modal-title"></h3>
+                </div>
+                <div id='modal-mensaje' class="modal-body"></div>
+                <div class="modal-footer">
+                    <a id="close" href="#" onclick="closeModal('modal'); loadDeliveries();" class="tooltip5">
+                        <img class="closeIcon" alt="Cerrar" src="Resources/close.png"/>
+                        <span class="tooltiptext5 ICONO_CERRAR"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div class="modal fade" id="myModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="CONFIRMAR_ELIMINAR"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ICONO_CERRAR" data-dismiss="modal"></button>
+                <button type="button" id="btnDelete" class="btn btn-primary ELIMINAR"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="filasTabla">
+    <div id="contadorPaginas"></div>
+</div>
+
+<div class="paginacion" id="paginacion">
+</div>
+
+<div id="footer"></div>
+</body>

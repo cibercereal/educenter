@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Last-Modified" content="0">
+	<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<!-- Scripts -->
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/index.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="./css/common.css" media="screen" />
+
+	<script src="./js/jquery-3.6.0.min.js"></script>
+	<script src="./js/popper.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="./js/constants.js"></script>
+	<script type="text/javascript" src="./js/commonFunctions.js"></script>
+	<script type="text/javascript" src="./js/formFunctions.js"></script>
+	<script type="text/javascript" src="./js/validations.js"></script>
+	<script type="text/javascript" src="./js/lang.js"></script>
+	<script type="text/javascript" src="./js/login.js"></script>
+	<script type="text/javascript" src="./js/register.js"></script>
+	<script type="text/javascript" src="./js/md5.js"></script>
+	<script type="text/javascript" src="./Locale/Lang_EN.js"></script>
+	<script type="text/javascript" src="./Locale/Lang_ES.js"></script>
+	<script type="text/javascript" src="./Locale/Lang_GA.js"></script>
+
+</head>
+
+<body onload="setLang('');loadLang();includeFooter();fillSelectRole()">
+	<!--MENU PRINCIPAL-->
+	<nav class="navbar navbar-expand-md navbar-dark langMenu w-100">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+						<img class="nav-link dropdown-toggle img-fluid" id="langImage" src="" />
+					</a>
+					<div class="dropdown-menu custom-dropdown-menu">
+						<a class="dropdown-item" href="#" onclick="loadLang('spanish');">
+							<input type="submit" name="btnSpain" id="btnSpain" value=""
+								onclick="loadLang('spanish');" />
+						</a>
+						<a class="dropdown-item" href="#" onclick="loadLang('english');">
+							<input type="submit" name="btnEnglish" id="btnEnglish" value=""
+								onclick="loadLang('english');" />
+						</a>
+						<a class="dropdown-item" href="#" onclick="loadLang('galego');">
+							<input type="submit" name="btnGalician" id="btnGalician" value=""
+								onclick="loadLang('galego');" />
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container">
+		<!--IMAGEN PRINCIPAL-->
+		<div class="row my-3">
+			<div class="col-12 mt-3">
+				<img src="./Resources/icon.png" class="img-fluid mx-auto d-block img-2 img-s-2"/>
+			</div>
+		</div>
+
+		<!--ACCESO LOGIN/REGISTRO PRINCIPAL-->
+		<div class="row">
+			<div class="col-6">
+				<a href="#" data-toggle="modal" data-target="#login-modal" class="tooltip float-right">
+					<img src="./Resources/login.png" class="float-right iconoLogin"/>
+					<span class="tooltiptext ICONO_LOGIN"></span>
+				</a>
+			</div>
+			<div class="col-6">
+				<a href="#" data-toggle="modal" data-target="#registro-modal" class="tooltip2 float-left">
+					<img src="./Resources/register.png" class="float-left iconoRegistro"/>
+					<span class="tooltiptext2 ICONO_REGISTRAR"></span>
+				</a>
+			</div>
+		</div>
+
+		<!--FORMULARIO LOGIN-->
+		<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="loginmodal-container">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h1 class="ACCEDER_PAGINA mb-3">Iniciar Sesión</h1>
+					<form name="loginForm" id="loginForm" action="javascript:login()" onsubmit="return checkLogin()">
+						<div class="form-group">
+							<label for="userLogin">Usuario:</label>
+							<input type="text" name="dni" class="LOGIN_USUARIO form-control" maxlength="9" size="9" id="userLogin" placeholder="Ingresa tu usuario" onblur="return checkUserDNI('userLogin', 'errorFormatUser', 'userLogin');" autocomplete="username">
+							<div style="display:none" id="errorFormatUser"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="passLogin">Contraseña:</label>
+							<input type="password" name="password" class="PASS_USUARIO form-control" id="passLogin" maxlength="45" size="45" placeholder="Ingresa tu contraseña" onKeyPress="capLock(event, 'bloqueoMayusculas');" onblur="return checkPass('passLogin', 'errorFormatPass', 'passwdUserLogin');" autocomplete="current-password">
+							<div style="display:none" class="BLOQUEO_MAYUSCULAS alert alert-warning" id="bloqueoMayusculas"></div>
+							<div style="display:none" id="errorFormatPass" class="alert alert-danger ocultar"></div>
+						</div>
+
+						<button type="submit" name="btnEntrar" value="Entrar" class="btn btn-primary btn-block btnEntrar">
+							<img class="iconoEntrar iconEntrar white-icon" src="./Resources/enterLogin.png" alt="Entrar" />
+							<span class="tooltiptext3 ICONO_ENTRAR"></span>
+						</button>
+					</form>
+
+					<div class="login-help mt-3">
+						<a href="#" data-toggle="modal" data-target="#recuperarcontrasena-modal" class="RECUPERAR_PASS">¿Olvidaste tu contraseña?</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--FORMULARIO REGISTRO-->
+		<div class="modal modal2 fade" id="registro-modal" role="dialog" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="registromodal-container">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h1 class="REGISTRO_PAGINA mb-3">Registro</h1>
+						<form name="formularioRegistro" id="formularioRegistro" action="javascript:register()" onsubmit="return checkRegister()">
+							<div id="datosPersonales" class="container">
+								<!--DNI-->
+								<div class="form-group">
+									<label class="DNI"></label>
+									<div class="obligatorio tooltip2" id="obligatorioDNI">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="dni" placeholder="DNI" id="dniP"
+										class="dni FORMATO_DNI form-control" maxlength="9" size="9"
+										onblur="return checkUserDNI('dniP', 'errorFormatDni', 'personDni')">
+
+									<div style="display:none" id="errorFormatDni"></div>
+								</div>
+
+								<!--NOMBRE-->
+								<div class="form-group">
+									<label class="NOMBRE_PERSONA"></label>
+									<div class="obligatorio tooltip2" id="obligatorioNombre">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="nombre" id="nombreP" placeholder="Nombre"
+										class="NOMBRE_PERSONA form-control" maxlength="45" size="45"
+										onblur="return checkName('nombreP', 'errorFormatNamePerson', 'namePersonRegister')">
+									<div style="display:none" id="errorFormatNamePerson"></div>
+								</div>
+
+								<!--APELLIDOS-->
+								<div class="form-group">
+									<label class="APELLIDOS_PERSONA"></label>
+									<div class="obligatorio tooltip2" id="obligatorioApellidos">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="apellidos_usuario" id='apellidosP' placeholder="Apellidos"
+										class="APELLIDOS_PERSONA form-control"
+										onblur="return checkSurname('apellidosP', 'errorFormatSurnameP', 'surnamePersonRegister');">
+									<div style="display:none" id="errorFormatSurnameP"></div>
+								</div>
+
+								<!--FECHA NACIMIENTO-->
+								<div class="form-group">
+									<label class="FECHA_NAC"></label>
+									<div class="obligatorio tooltip2" id="obligatorioFechaNac">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="date" name="fecha_nac" id='fechaNacP' value="1900-01-01"
+										min="1900-01-01" max="3000-01-01" class="form-control"
+										onblur="return checkBirthDate('fechaNacP', 'errorFormatDate', 'datePersonRegister');">
+									<div style="display:none" id="errorFormatDate"></div>
+								</div>
+
+								<!--DIRECCION-->
+								<div class="form-group">
+									<label class="DIRECCION_PERSONA"></label>
+									<div class="obligatorio tooltip2" id="obligatorioDireccion">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="text" name="direccion" id='direccionP' placeholder="Direccion"
+										class="DIRECCION_PERSONA form-control" maxlength="200" size="200"
+										onblur="return checkAddress('direccionP', 'errorFormatAddress', 'addressPersonRegister');">
+									<div style="display:none" id="errorFormatAddress"></div>
+								</div>
+
+								<!--ROL-->
+								<div class="form-group">
+									<label class="ROL"></label>
+									<div class="obligatorio tooltip2" id="obligatorioRol">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<div class="obligatorio tooltip2" id="obligatorioRol" style="display:none">*
+										<span class="tooltiptext2 CAMPO_OBLIGATORIO"></span>
+									</div>
+									<select name='id_rol' id='select_id_rol' class="form-control"></select>
+									<div id="errorFormatoCategoriaPadre" style="display:none"></div>
+								</div>
+
+								<!--TELEFONO-->
+								<div class="form-group">
+									<label class="TELEFONO"></label>
+									<div class="obligatorio tooltip2" id="obligatorioTelefono">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="tel" name="telefono" id='telefonoP' pattern="[0-9]{3}[0-9]{3}[0-9]{3}"
+										maxlength="9" size="9" class="form-control FORMATO_TELF"
+										onblur="return checkPhone('telefonoP', 'errorFormatPhone', 'phonePersonRegister');">
+									<div style="display:none" id="errorFormatPhone"></div>
+								</div>
+
+								<!--EMAIL-->
+								<div class="form-group">
+									<label class="EMAIL"></label>
+									<div class="obligatorio tooltip2" id="obligatorioEmail">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="email" name="email" id="emailP" placeholder="Email"
+										class="EMAIL_USUARIO form-control" maxlength="40" size="40"
+										onblur="return checkEmail('emailP', 'errorFormatEmail', 'emailPersonRegister');">
+									<small class="FORMATO_EMAIL"></small>
+									<div style="display:none" id="errorFormatEmail"></div>
+								</div>
+
+								<!--CONTRASEÑA-->
+								<div class="form-group">
+									<label class="PASS_USUARIO"></label>
+									<div class="obligatorio tooltip2" id="obligatorioPass1">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="password" name="password" id="passwdUsuario1" placeholder="Contraseña"
+										class="PASS_USUARIO form-control" maxlength="45" size="45"
+										onKeyPress="capLock(event, 'bloqueoMayusculasRegistro');"
+										onblur="return checkPass('passwdUsuario1', 'errorFormatoPassRegistro', 'passwdUserRegister');"
+										autocomplete="new-password">
+									<div style="display:none" id="errorFormatoPassRegistro"></div>
+								</div>
+
+								<!--REPETIR CONTRASEÑA-->
+								<div class="form-group">
+									<label class="CONFIRMAR_PASS_USUARIO"></label>
+									<div class="obligatorio tooltip2" id="obligatorioPass2">*
+										<span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo
+											obligatorio</span>
+									</div>
+									<input type="password" name="confirmarPass" id="passwdUsuario2"
+										placeholder="ConfirmarContraseña" class="CONFIRMAR_PASS_USUARIO form-control"
+										maxlength="45" size="45"
+										onKeyPress="capLock(event, 'bloqueoMayusculasRegistro');"
+										onblur="return checkPassRep('passwdUsuario2', 'errorFormatPassRegister2', 'passwdUserRegister');"
+										autocomplete="new-password">
+								</div>
+
+								<div style="display:none" id="errorFormatPassRegister2"></div>
+
+
+								<div style="display:none" class="BLOQUEO_MAYUSCULAS alert alert-warning"
+									id="bloqueoMayusculasRegistro"></div>
+
+
+								<div id="error" class="alert alert-danger ocultar" role="alert"
+									class="CONTRASEÑAS_NO_COINCIDEN"></div>
+							</div>
+
+							<!--BOTON ENVIAR-->
+							<button type="submit" name="btnRegistrar" value="Registrar" class="btnRegistrar tooltip3">
+								<img class="iconoRegistrar iconRegistrar white-icon" src="./Resources/registrar3.png"
+									alt="Registrar" />
+								<span class="tooltiptext3 ICONO_REGISTRAR pointer"></span>
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--MODAL RECUPERAR CONTRASEÑA-->
+		<div class="modal modal3 fade" id="recuperarcontrasena-modal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="recuperarcontrasenamodal-container">
+					<h1 class="OLVIDAR_CONTRASENA"></h1>
+					<div class="rellenarPass RELLENAR_FORM_PASS"></div><br>
+					<form name="formularioObtenerNuevaContrasena" id="formularioObtenerNuevaContrasena"
+						action="javascript:getNewPassword()"
+						onsubmit="return checkGetNewPassword()">
+						<div class="form-group">
+							<label class="DNI"></label>
+							<input type="text" name="dni" class="LOGIN_USUARIO form-control" maxlength="15"
+								size="15" id="userRecuperarPass" placeholder="Usuario"
+								onblur="return checkUserDNI('userRecuperarPass', 'errorFormatUserPass', 'loginUsuarioRecPass');">
+							<div style="display:none" id="errorFormatUserPass"></div>
+						</div>
+
+						<div class="form-group">
+							<label class="EMAIL"></label>
+							<input type="email" name="email" class="EMAIL_USUARIO form-control" maxlength="40" size="40"
+								id="emailUser" placeholder="Email"
+								onblur="return checkEmail('emailUser', 'errorFormatoEmailRecPass', 'emailUsuarioRecPass');">
+							<div style="display:none" id="errorFormatoEmailRecPass"></div>
+							<small>Formato: ejemplo@ejemplo.es</small>
+						</div>
+
+						<button type="submit" name="btnResetPass" value="Recuperar Contraseña"
+							class="btnResetPass tooltip4">
+							<img class="iconoResetPass iconResetPass white-icon" src="./Resources/resetPass.png" alt="Entrar" />
+							<span class="tooltiptext4 ICONO_RECUPERAR_PASS"></span>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!--MODAL ALERTAS-->
+		<div id="modal" tabindex="-1" role="dialog" style="display:none">
+			<div class="modal-dialog" role="document" id="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<img src="" name="aviso" class="imagenAviso" />
+						<h3 id="modal-title" class="modal-title"></h3>
+					</div>
+					<div id='modal-mensaje' class="modal-body"></div>
+					<div class="modal-footer">
+						<a id="close" href="#" onclick="closeModal('modal')" class="tooltip5">
+							<img class="closeIcon" alt="Cerrar" src="./Resources/close.png" />
+							<span class="tooltiptext5 ICONO_CERRAR"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--FOOTER-->
+	<div id="footer"></div>
+</body>
+
+</html>

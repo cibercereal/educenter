@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css" media="screen"/>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+    <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/commonFunctions.js"></script>
+    <script type="text/javascript" src="js/formFunctions.js"></script>
+    <script type="text/javascript" src="js/validations.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/teachersDetailManagement.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="Locale/Lang_EN.js"></script>
+    <script type="text/javascript" src="Locale/Lang_ES.js"></script>
+    <script type="text/javascript" src="Locale/Lang_GA.js"></script>
+</head>
+
+<body onload="
+(async ()=>{
+    await userRole();
+	loadLang();
+	includeFooter();
+	includeBreadCrumb(['menu', 'subjectManagement', 'teacherDetail']);
+	await loadTeachers();
+	filterButton();
+	setLang('');
+})();">
+<!--MENU-->
+<div id="topMenu"></div>
+
+<!--BREADCRUMB-->
+<nav id="breadcrumb" aria-label="breadcrumb"></nav>
+
+<h1 id="projectDetail" class="gestion"></h1>
+
+<div id="tablaDatos">
+    <h2 class="text-center PROFESORES"></h2>
+    <!--BOTON FILTRAR-->
+    <div id="btnFilter"></div>
+
+    <div>
+        <table class="table table-bordered text-center table-striped" id="tablaTrabajos">
+            <thead class="headerGestionRoles">
+            <!--DNI alumno-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn DNI"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(0, 'tablaTrabajos')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bdni" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--Nombre alumno-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn NOMBRE_PERSONA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(1, 'tablaTrabajos')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bnombre" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--Apellidos alumno-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn APELLIDOS_PERSONA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(2, 'tablaUsuarios')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bapellidos" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--ACCIONES-->
+            <th scope="col" class="ACCIONES">
+                <div class="ACCIONES"></div>
+            </th>
+            </thead>
+            <tbody id="datosEntidades" class="bodyGestionMaterias">
+        </table>
+    </div>
+
+    <!--MODAL ACCIONES-->
+    <div class="modal fade" id="formularioAcciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" id="contenidoForm">
+            <div class="formularioAcciones-container">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h1 id="tituloModal"></h1>
+                <form name="formularioGenerico" id="formularioGenerico" action="" onsubmit="">
+                    <div id="datosTrabajo" class="container tab-pane active overflow-auto"><br>
+                        <!-- DATOS -->
+                        <div class="form-group">
+                            <label class="DATOS" id="label_datos" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_datos" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="file" name="datos" id="input_datos"
+                                   style="display:none" class="DATOS form-control" onblur=""/>
+                            <div id="errorFormatData" style="display:none"></div>
+                        </div>
+                        <!-- FECHA_ENTREGA -->
+                        <div class="form-group">
+                            <label class="FECHA_ENTREGA" id="label_fecha_entrega" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_fecha_entrega" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="date" maxlength="48" placeholder="" name="fecha_entrega" id="input_fecha_entrega"
+                                   style="display:none" class="FECHA_ENTREGA form-control" onblur="" />
+                            <div id="errorFormatFechaEntrega" style="display:none"></div>
+                        </div>
+                        <!-- NOMBRE_TRABAJO -->
+                        <div class="form-group">
+                            <label class="NOMBRE_TRABAJO" id="label_nombre_trabajo" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_nombre_trabajo" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="text" name="nombre_trabajo" id="input_nombre_trabajo"
+                                   style="display:none" class="NOMBRE_TRABAJO form-control" onblur=""/>
+                            <div id="errorFormatNombreTrabajo" style="display:none"></div>
+                        </div>
+                        <!-- PORCENTAJE NOTA -->
+                        <div class="form-group">
+                            <label class="PORCENTAJE_NOTA" id="label_porcentaje_nota" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_porcentaje_nota" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="number" name="porcentaje_nota" id="input_porcentaje_nota"
+                                   style="display:none" class="PORCENTAJE_NOTA form-control" onblur=""/>
+                            <div id="errorFormatPorcentajeNota" style="display:none"></div>
+                        </div>
+                        <!-- PORCENTAJE CORRECCION -->
+                        <div class="form-group">
+                            <label class="PORCENTAJE_CORRECCION" id="label_correccion_nota" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_correccion_nota" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="number" name="correccion_nota" id="input_correccion_nota"
+                                   style="display:none" class="PORCENTAJE_CORRECCION form-control" onblur=""/>
+                            <div id="errorFormatCorreccionNota" style="display:none"></div>
+                        </div>
+                        <!-- FECHA INICIO -->
+                        <div class="form-group">
+                            <label class="FECHA_INICIO" id="label_fecha_ini" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_fecha_ini" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="date" maxlength="48" placeholder="" name="fecha_ini" id="input_fecha_ini"
+                                   style="display:none" class="FECHA_INICIO form-control" onblur="" />
+                            <div id="errorFormatFechaIni" style="display:none"></div>
+                        </div>
+                        <!-- FECHA FIN -->
+                        <div class="form-group">
+                            <label class="FECHA_FIN" id="label_fecha_fin" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_fecha_fin" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="date" maxlength="48" placeholder="" name="fecha_fin" id="input_fecha_fin"
+                                   style="display:none" class="FECHA_FIN form-control" onblur="" />
+                            <div id="errorFormatFechaFin" style="display:none"></div>
+                        </div>
+                    </div>
+                    <!-- LINK DESCARGA -->
+                    <a id="descargarEnlace" href="#" class="DESCARGAR" style="display:none">Descargar</a>
+
+                    <button type="submit" name="btnAcciones" value="" class="tooltip6" id="btnAcciones">
+                        <img class="" src="" alt="" id="iconoAcciones" />
+                        <span class="tooltiptext" id="spanAcciones"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL VER PERFIL-->
+    <div class="modal modal3 fade" id="viewProfile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog"></div>
+    </div>
+
+    <!--MODAL CAMBIO CONTRASEÑA-->
+    <div class="modal modal3 fade" id="changePass-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+    </div>
+
+    <!--MODAL ALERTAS-->
+    <div id="modal" tabindex="-1" role="dialog" style="display:none">
+        <div class="modal-dialog" role="document" id="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="" name="aviso" class="imagenAviso"/>
+                    <h3 id="modal-title" class="modal-title"></h3>
+                </div>
+                <div id='modal-mensaje' class="modal-body"></div>
+                <div class="modal-footer">
+                    <a id="close" href="#" onclick="closeModal('modal'); loadTeachers();" class="tooltip5">
+                        <img class="closeIcon" alt="Cerrar" src="Resources/close.png"/>
+                        <span class="tooltiptext5 ICONO_CERRAR"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div class="modal fade" id="myModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+			<div class="modal-dialog">
+				<div class="formularioAcciones-container">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<p id="deleteMsg"></p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ICONO_CERRAR" data-dismiss="modal"></button>
+                <button type="button" id="btnDelete" class="btn btn-danger ELIMINAR"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="filasTabla">
+    <div id="contadorPaginas"></div>
+</div>
+
+<div class="paginacion" id="paginacion">
+</div>
+
+<div id="footer"></div>
+</body>

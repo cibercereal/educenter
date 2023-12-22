@@ -1,0 +1,78 @@
+@media only screen and (min-width: 320px) and (max-width: 415px) {
+    .footer {
+      font-size: 15px;
+    }
+  
+    .imagenLogo {
+      width: 32px !important;
+    }
+  
+    .bienvenida {
+      top: 9% !important;
+      left: 2% !important;
+      font-size: 2.5em !important;
+      width: 100% !important;
+    }
+    
+    .changePassmodal-container h1 {
+      font-size: 1.3em !important;
+    }
+  
+    .changePassmodal-container input[type="text"] {
+      height: 37px !important;
+      font-size: 14px !important;
+    }
+  
+    form button[type="submit"],
+    form button[type="button"] {
+      height: 39px !important;
+    }
+  
+    .changePassmodal-container input[type="email"] {
+      height: 37px !important;
+      font-size: 14px !important;
+      width: 51% !important;
+    }
+  
+    .changePassmodal-container input[type="password"] {
+      height: 37px !important;
+      font-size: 14px !important;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1299px) {
+    .bienvenida {
+      top: 9% !important;
+      left: 2% !important;
+      font-size: 3.5em !important;
+      width: 100% !important;
+    }
+
+    #changePass-modal,#viewProfile-modal .modal-dialog {
+        margin: 2rem auto !important;
+    }
+}
+
+@media (min-width: 1300px) and (max-width: 1900px) {
+    .bienvenida {
+      top: 9% !important;
+      left: 2% !important;
+      font-size: 3.5em !important;
+      width: 100% !important;
+    }
+
+    #changePass-modal,#viewProfile-modal .modal-dialog {
+        margin: 2rem auto !important;
+    }
+}
+
+.bienvenida {
+    text-align: center;
+    position: fixed;
+    top: 30%;
+    left: 25%;
+    font-size: 5em;
+    width: 50%;
+    font-family: Roboto;
+    color: #0A0A0B;
+}

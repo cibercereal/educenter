@@ -1,0 +1,542 @@
+@media only screen and (min-width: 320px) and (max-width: 415px) {
+    .footer {
+      font-size: 15px;
+    }
+
+    
+    #navbardrop {
+        height: 42px !important;
+    }
+
+    .dropdown-menu {
+        margin: 0.1rem 0 0 !important;
+        padding: 0;
+        border: 1px #222 solid;
+    }
+
+    .imagenAviso {
+      margin-top: 1% !important;
+    }
+
+    .dropdown-item {
+        border: 0.5px #212529 solid;
+    }
+
+    .loginmodal-container h1,
+    .registromodal-container h1,
+    .recuperarcontrasenamodal-container h1 {
+        font-size: 1.3em !important;
+    }
+/*
+    .loginmodal-container input[type="text"],
+    .loginmodal-container input[type="password"],
+    .recuperarcontrasenamodal-container input[type="text"] {
+        height: 37px !important;
+        font-size: 14px !important;
+    }
+
+    .loginmodal-container input[type="text"]:hover,
+    input[type="password"]:hover,
+    .registromodal-container input[type="text"]:hover,
+    input[type="password"]:hover,
+    input[type="date"]:hover,
+    input[type="tel"]:hover,
+    input[type="email"]:hover,
+    select:hover,
+    .recuperarcontrasenamodal-container input[type="text"]:hover,
+    input[type="email"]:hover {
+        border: 1px solid #B4CBFC;
+        border-top: 2px solid #80cbc4;
+        -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    form button[type="submit"],
+    form button[type="button"] {
+        height: 39px !important;
+    }
+*/
+    .modal-dialog {
+        margin: 2rem auto !important;
+    }
+
+    #modal-dialog {
+        left: 3% !important;
+    }
+
+    .modal-content {
+        width: 94% !important;
+    }
+
+    #modal-mensaje {
+        font-size: 15px !important;
+    }
+
+    #modal-title {
+        left: 14% !important;
+        font-size: 19px !important;
+    }
+
+    #registro-modal .modal-dialog {
+        margin: 2rem auto !important;
+      }
+}
+    
+@media (min-width: 1300px) and (max-width: 1900px) {
+    .modal-dialog {
+    margin: 10rem auto !important;
+    }
+
+    #registro-modal .modal-dialog {
+    margin: 6rem auto !important;
+    }
+}
+
+.nav-tabs .nav-link.active {
+    color: #222 !important;
+}
+
+/********* DESPLEGABLE IDIOMAS *********/
+#langImage {
+    display: inline;
+    width: 50px;
+    margin-top: -12px;
+    margin-left: 5px;
+}
+
+.navbar-nav {
+    margin-top: 1px;
+    border-radius: 5px;
+    border: 2px solid #222;
+    height: 46px;
+}
+
+.navbar-nav .nav-link {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+#navbardrop,
+#navbardrop2 {
+    background-color: #18181A !important;
+    height: 42px;
+}
+
+.dropdown-menu {
+    top: 71% !important;
+    left: 94% !important;
+    text-align: center !important;
+    background-color: #45454A !important;
+    min-width: 5rem !important;
+}
+
+.dropdown-item {
+    height: 30px !important;
+}
+
+.dropdown-item:hover {
+    background-color: #A0A0A7 !important;
+    cursor: pointer !important;
+}
+
+#btnEnglish {
+    background-color: transparent;
+    background-image: url(../Resources/United-Kingdom2.png);
+    height: 27px;
+    width: 33px;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid transparent;
+    margin-top: -1px;
+    cursor: pointer;
+}
+
+#btnEnglish:hover {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+#btnGalician {
+    background-color: transparent;
+    background-image: url(../Resources/Galicia2.png);
+    height: 27px;
+    width: 33px;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid transparent;
+    margin-top: -1px;
+    cursor: pointer;
+}
+
+#btnGalician:hover {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+#btnSpain {
+    background-color: transparent;
+    background-image: url(../Resources/Spain2.png);
+    height: 27px;
+    width: 33px;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid transparent;
+    margin-top: -1px;
+    cursor: pointer;
+}
+
+#btnSpain:hover {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.langMenu {
+    background-color: #18181A;
+    height: 60px;
+}
+
+/****** LOGIN Y REGISTRO MODAL ******/
+
+.login {
+    margin-left: 50%;
+}
+
+.loginmodal-container {
+    padding: 30px;
+    max-width: 350px;
+    width: 100% !important;
+    background-color: #E7E7E9;
+    margin: 0 auto;
+    border-radius: 2px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    font-family: roboto;
+}
+
+
+.loginmodal-container h1,
+.registromodal-container h1,
+.recuperarcontrasenamodal-container h1 {
+    text-align: center;
+    font-size: 1.8em;
+    font-family: roboto;
+    color: #0A0A0B;
+}
+
+.loginmodal-container a,
+.registromodal-container a,
+.recuperarcontrasenamodal-container a {
+    text-decoration: none;
+    color: #0F0F10;
+    font-weight: 400;
+    text-align: center;
+    display: inline-block;
+    opacity: 0.6;
+    transition: opacity ease 0.5s;
+}
+
+.loginmodal-container a:hover,
+.registromodal-container a:hover,
+.recuperarcontrasenamodal-container a:hover {
+    text-decoration: none;
+    color: #71717A;
+    font-weight: 400;
+    text-align: center;
+    display: inline-block;
+    opacity: 0.6;
+    transition: opacity ease 0.5s;
+}
+
+.modal-dialog {
+    pointer-events: visible !important;
+}
+
+.iconoEntrar,
+.iconoResetPass,
+.iconoRegistrar {
+  position: relative;
+  width: 30px;
+}
+
+form button[type="submit"],
+form button[type="button"] {
+  background: #222;
+  cursor: pointer;
+  width: 100%;
+  height: 50px;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  margin-bottom: 5px;
+}
+
+form button[type="submit"]:hover,
+form button[type="button"]:hover {
+  border: 0px;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  background-color: #0F0F10;
+}
+
+.registromodal-container,
+.recuperarcontrasenamodal-container {
+  padding: 15px;
+  max-width: 600px;
+  width: 100% !important;
+  background-color: #E7E7E9;
+  margin: 0 auto;
+  border-radius: 2px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  font-family: roboto;
+}
+
+.loginmodal-container h1,
+.registromodal-container h1,
+.recuperarcontrasenamodal-container h1 {
+  text-align: center;
+  font-size: 1.8em;
+  font-family: roboto;
+  color: #0A0A0B;
+}
+/*
+.registromodal-container input[type="text"],
+.registromodal-container input[type="password"] {
+  height: 30px;
+  font-size: 14px;
+  width: 90%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #4db6ac;
+  border-top: 2px solid #00897b;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.registromodal-container input[name="dni"],
+.registromodal-container input[name="user"] {
+  margin-top: 20px;
+}
+
+.registromodal-container input[type="email"],
+.registromodal-container input[name="confirmarPass"] {
+  margin-bottom: 20px !important;
+}
+
+.registromodal-container select {
+  height: 30px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #4db6ac;
+  border-top: 2px solid #00897b;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.registromodal-container input[type="date"],
+input[type="tel"] {
+  height: 30px;
+  font-size: 14px;
+  width: 36%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #4db6ac;
+  border-top: 2px solid #00897b;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.registromodal-container input[type="email"] {
+  height: 30px;
+  font-size: 14px;
+  width: 59%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #4db6ac;
+  border-top: 2px solid #00897b;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+*/
+.loginmodal-container a,
+.registromodal-container a,
+.recuperarcontrasenamodal-container a {
+  text-decoration: none;
+  color: #0F0F10;
+  font-weight: 400;
+  text-align: center;
+  display: inline-block;
+  opacity: 0.6;
+  transition: opacity ease 0.5s;
+}
+
+#datosPersonales,
+#datosUsuario,
+#datosEmpresa {
+  color: #222;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/********** TOOLTIPS ICONOS ************/
+.tooltip,
+.tooltip22,
+.tooltip3,
+.tooltip4,
+.tooltip5 {
+  position: relative;
+  display: inline-block;
+  opacity: 1;
+  z-index: 1;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 130px;
+  font-size: 11pt;
+  font-family: "Times New Roman";
+  background-color: #222;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #222;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 94%;
+  margin-left: -90px !important;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip2 .tooltiptext2 {
+  visibility: hidden;
+  width: 130px;
+  font-size: 11pt;
+  font-family: "Times New Roman";
+  background-color: #222;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #222;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 100 !important;
+  bottom: 125%;
+  left: 5%;
+  margin-left: -51px !important;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip3 .tooltiptext3 {
+  visibility: hidden;
+  width: 130px;
+  font-size: 11pt;
+  font-family: "Times New Roman";
+  background-color: #222;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #222;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 52%;
+  margin-left: -66px;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip4 .tooltiptext4 {
+  visibility: hidden;
+  width: 130px;
+  font-size: 11pt;
+  font-family: "Times New Roman";
+  background-color: #222;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #222;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 52%;
+  margin-left: -66px;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip5 .tooltiptext5 {
+  visibility: hidden;
+  width: 130px;
+  font-size: 11pt;
+  font-family: "Times New Roman";
+  background-color: #222;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #222;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  right: 83%;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip .tooltiptext::after,
+.tooltip2 .tooltiptext2::after,
+.tooltip3 .tooltiptext3::after,
+.tooltip4 .tooltiptext4::after,
+.tooltip5 .tooltiptext5::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #222 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext,
+.tooltip2:hover .tooltiptext2,
+.tooltip3:hover .tooltiptext3,
+.tooltip4:hover .tooltiptext4,
+.tooltip5:hover .tooltiptext5 {
+  visibility: visible;
+  opacity: 1;
+}
+
+/************ ICONOS **************/
+.iconoLogin {
+  width: 4em;
+}
+
+.iconoRegistro {
+  width: 3em;
+}
+
+@media (max-width: 576px) {
+  .registromodal-container,
+  .recuperarcontrasenamodal-container {
+    max-width: 350px;
+  }
+}

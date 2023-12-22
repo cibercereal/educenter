@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css" media="screen"/>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/commonFunctions.js"></script>
+    <script type="text/javascript" src="js/formFunctions.js"></script>
+    <script type="text/javascript" src="js/validations.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/subjectTeacherManagement.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="Locale/Lang_EN.js"></script>
+    <script type="text/javascript" src="Locale/Lang_ES.js"></script>
+    <script type="text/javascript" src="Locale/Lang_GA.js"></script>
+</head>
+
+<body onload="
+(async ()=>{
+    await userRole();
+	loadLang();
+	includeFooter();
+	includeBreadCrumb(['menu', 'teacherSubjectManagement']);
+	await loadSubjects();
+	filterButton();
+	setLang('');
+})();">
+<!--MENU-->
+<div id="topMenu"></div>
+
+<!--BREADCRUMB-->
+<nav id="breadcrumb" aria-label="breadcrumb"></nav>
+
+<h1 class="gestion GESTION_DOCENTE_MATERIA"></h1>
+
+<div id="tablaDatos">
+    <!--BOTON FILTRAR-->
+    <div id="btnFilter"></div>
+
+    <!--TABLA-->
+    <div>
+        <table class="table table-bordered text-center table-striped" id="tablaMaterias">
+            <thead class="headerGestionRoles">
+            <!--Nombre materia-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn NOMBRE_MATERIA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(0, 'tablaMaterias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bnombre" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--Créditos-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn CREDITOS"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(1, 'tablaMaterias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bcreditos" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--Profesor ppal-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn PROFESOR_PPAL"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(2, 'tablaMaterias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bprofesorppal" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--ACCIONES-->
+            <th scope="col" class="ACCIONES">
+                <div class="ACCIONES"></div>
+            </th>
+            </thead>
+            <tbody id="datosEntidades" class="bodyGestionMaterias">
+        </table>
+    </div>
+
+    <!--MODAL ACCIONES-->
+    <div class="modal fade" id="formularioAcciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" id="contenidoForm">
+            <div class="formularioAcciones-container">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h1 id="tituloModal"></h1>
+                <form name="formularioGenerico" id="formularioGenerico" action="" onsubmit="">
+                    <div id="datosMateria" class="container tab-pane active overflow-auto"><br>
+
+                    </div>
+
+                    <button type="submit" name="btnAcciones" value="" class="tooltip6" id="btnAcciones">
+                        <img class="" src="" alt="" id="iconoAcciones" />
+                        <span class="tooltiptext" id="spanAcciones"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL VER PERFIL-->
+    <div class="modal modal3 fade" id="viewProfile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog"></div>
+    </div>
+
+    <!--MODAL CAMBIO CONTRASEÑA-->
+    <div class="modal modal3 fade" id="changePass-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+    </div>
+
+    <!--MODAL ALERTAS-->
+    <div id="modal" tabindex="-1" role="dialog" style="display:none">
+        <div class="modal-dialog" role="document" id="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="" name="aviso" class="imagenAviso"/>
+                    <h3 id="modal-title" class="modal-title"></h3>
+                </div>
+                <div id='modal-mensaje' class="modal-body"></div>
+                <div class="modal-footer">
+                    <a id="close" href="#" onclick="closeModal('modal'); loadSubjects();" class="tooltip5">
+                        <img class="closeIcon" alt="Cerrar" src="Resources/close.png"/>
+                        <span class="tooltiptext5 ICONO_CERRAR"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div class="modal fade" id="myModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
+            <div class="formularioAcciones-container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p id="deleteMsg"></p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ICONO_CERRAR" data-dismiss="modal"></button>
+                <button type="button" id="btnDelete" class="btn btn-danger ELIMINAR_SOLICITUD"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="filasTabla">
+    <div id="contadorPaginas"></div>
+</div>
+
+<div class="paginacion" id="paginacion">
+</div>
+
+<div id="footer"></div>
+</body>

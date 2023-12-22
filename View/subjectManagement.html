@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css" media="screen"/>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/commonFunctions.js"></script>
+    <script type="text/javascript" src="js/formFunctions.js"></script>
+    <script type="text/javascript" src="js/validations.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/subjectManagement.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="Locale/Lang_EN.js"></script>
+    <script type="text/javascript" src="Locale/Lang_ES.js"></script>
+    <script type="text/javascript" src="Locale/Lang_GA.js"></script>
+</head>
+
+<body onload="
+(async ()=>{
+    await userRole();
+	await getTeachers();
+	loadLang();
+	includeFooter();
+	includeBreadCrumb(['menu', 'subjectManagement']);
+	await loadSubjectData();
+	addButton();
+	setLang('');
+})();">
+<!--MENU-->
+<div id="topMenu"></div>
+
+<!--BREADCRUMB-->
+<nav id="breadcrumb" aria-label="breadcrumb"></nav>
+
+<h1 class="gestion GESTION_MATERIAS"></h1>
+
+<div id="tablaDatos">
+
+    <!--BOTON AÑADIR-->
+    <div id="btnAdd"></div>
+
+    <!--TABLA-->
+    <div>
+        <table class="table table-bordered table-striped text-center" id="tablaMaterias">
+            <thead class="headerGestionRoles">
+            <!--Nombre materia-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn NOMBRE_MATERIA"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(0, 'tablaMaterias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bnombre" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--Créditos-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn CREDITOS"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(1, 'tablaMaterias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bcreditos" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--Profesor ppal-->
+            <th scope="col">
+                <div class="nombreUsuarioColumn PROFESOR_PPAL"></div>
+                <div name="btnOrdenar" value="Ordenar" onclick="sortTable(2, 'tablaMaterias')" class="tooltip7">
+                    <img class="iconoOrdenar pointer" src="Resources/ordenacion.png" alt="Ordenar"/>
+                    <span class="tooltiptext ORDENAR"></span>
+                </div>
+                <div>
+                    <input type="text" id="bprofesorppal" class="mt-1 form-control" style="display:none" onkeyup="filtrar()">
+                </div>
+            </th>
+            <!--ACCIONES-->
+            <th scope="col" class="ACCIONES">
+                <div class="ACCIONES"></div>
+            </th>
+            </thead>
+            <tbody id="datosEntidades" class="bodyGestionMaterias">
+        </table>
+    </div>
+
+    <!--MODAL AÑADIR MATERIA-->
+    <div class="modal modal2 fade" id="materia-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="registromodal-container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h1 class="ANADIR_MATERIA"></h1>
+                <form name="formularioAnadirMateria" id="formularioAnadirMateria" action="javascript:addSubject()"
+                      onsubmit="return checkSubject()">
+                    <div class="tab-content">
+                        <div id="datosMaterias" class="container tab-pane active overflow-auto"><br>
+                            <!-- NOMBRE -->
+                            <div class="form-group">
+                                <label class="NOMBRE_MATERIA"></label>
+                                <div class="obligatorio tooltip2" id="obligatorioNombre">*
+                                    <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo obligatorio</span>
+                                </div>
+                                <input type="text" name="nombre_materia" id="nombreM" placeholder="Nombre"
+                                       class="NOMBRE_MATERIA form-control" maxlength="45" size="45"
+                                       onblur="return checkName('nombreM', 'errorFormatSubjectName', 'nameSubject')">
+                                <div style="display:none" id="errorFormatSubjectName"></div>
+                            </div>
+
+                            <!-- CREDITOS -->
+                            <div class="form-group">
+                                <label class="CREDITOS"></label>
+                                <div class="obligatorio tooltip2" id="obligatorioCreditos">*
+                                    <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO">Campo obligatorio</span>
+                                </div>
+                                <input type="text" name="creditos" id="creditosM" placeholder="Creditos"
+                                       class="CREDITOS form-control" maxlength="4" size="4"
+                                       onblur="return checkCredits('creditosM', 'errorFormatSubjectCredits', 'creditsSubject')">
+                                <div style="display:none" id="errorFormatSubjectCredits"></div>
+                            </div>
+
+                            <!-- PROFESOR PPAL -->
+                            <div class="form-group">
+                                <label class="PROFESOR_PPAL"></label>
+                                <div class="tooltip2" id="obligatorioProfesorPpal"></div>
+                                <select name='dni' id='select_dni' class="form-control"></select>
+                                <div id="errorFormatoCategoriaPadre" style="display:none"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="btnAnadir" value="Anadir" class="btnRegistrar tooltip3">
+                        <img class="iconoRegistrar iconRegistrar white-icon" src="Resources/registrar3.png" alt="AnadirMateria"/>
+                        <span class="tooltiptext3 ANADIR_MATERIA"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL ACCIONES-->
+    <div class="modal fade" id="formularioAcciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" id="contenidoForm">
+            <div class="formularioAcciones-container">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h1 id="tituloModal"></h1>
+                <form name="formularioGenerico" id="formularioGenerico" action="" onsubmit="">
+                    <div id="datosMateria" class="container tab-pane active overflow-auto"><br>
+                        <!-- NOMBRE_MATERIA -->
+                        <div class="form-group">
+                            <label class="NOMBRE_MATERIA" id="label_nombre_materia" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_nombre_materia" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="text" maxlength="48" placeholder="" name="nombre_materia" id="input_nombre_materia"
+                                   style="display:none" class="NOMBRE_MATERIA form-control" onblur="" />
+                            <div id="errorFormatSubjectName1" style="display:none"></div>
+                        </div>
+                        <!-- CREDITOS -->
+                        <div class="form-group">
+                            <label class="CREDITOS" id="label_creditos" style="display:none"></label>
+                            <div class="obligatorio tooltip2" id="obligatorio_creditos" style="display:none">*
+                                <span class="tooltiptext2 campoObligatorio CAMPO_OBLIGATORIO"></span>
+                            </div>
+                            <input type="text" maxlength="48" placeholder="" name="creditos" id="input_creditos"
+                                   style="display:none" class="CREDITOS form-control" onblur="" />
+                            <div id="errorFormatSubjectCredits1" style="display:none"></div>
+                        </div>
+                        <!-- PROFESOR PPAL -->
+                        <div class="form-group">
+                            <label class="PROFESOR_PPAL" id="label_select_dni"></label>
+                            <div class="tooltip2" id="obligatorio_profesor_ppal"></div>
+                            <select name='dni' id='input_select_dni' class="form-control"></select>
+                            <div id="errorFormatPpalTeacher" style="display:none"></div>
+                        </div>
+
+                        <!-- +INFO -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-4" id="label_mas_info" style="display:none">
+                                    <a><label class="MAS_INFO pointer" id="mas_info"></label></a>
+                                </div>
+                                <div class="col-4" id="label_student_info" style="display:none">
+                                    <a><label class="ALUMNOS pointer" id="student_info"></label></a>
+                                </div>
+                                <div class="col-4" id="label_teacher_info" style="display:none">
+                                    <a><label class="PROFESORES pointer" id="teacher_info"></label></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="btnAcciones" value="" class="tooltip6" id="btnAcciones">
+                        <img class="" src="" alt="" id="iconoAcciones" />
+                        <span class="tooltiptext" id="spanAcciones"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL VER PERFIL-->
+    <div class="modal modal3 fade" id="viewProfile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog"></div>
+    </div>
+
+    <!--MODAL CAMBIO CONTRASEÑA-->
+    <div class="modal modal3 fade" id="changePass-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+    </div>
+
+    <!--MODAL ALERTAS-->
+    <div id="modal" tabindex="-1" role="dialog" style="display:none">
+        <div class="modal-dialog" role="document" id="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="" name="aviso" class="imagenAviso"/>
+                    <h3 id="modal-title" class="modal-title"></h3>
+                </div>
+                <div id='modal-mensaje' class="modal-body"></div>
+                <div class="modal-footer">
+                    <a id="close" href="#" onclick="closeModal('modal'); loadSubjectData();" class="tooltip5">
+                        <img class="closeIcon" alt="Cerrar" src="Resources/close.png"/>
+                        <span class="tooltiptext5 ICONO_CERRAR"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div class="modal fade" id="myModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="formularioAcciones-container">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <p id="deleteMsg"></p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ICONO_CERRAR" data-dismiss="modal"></button>
+                <button type="button" id="btnDelete" class="btn btn-danger ELIMINAR_MATERIA"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="filasTabla">
+    <div id="contadorPaginas"></div>
+</div>
+
+<div class="paginacion" id="paginacion">
+</div>
+
+<div id="footer"></div>
+</body>

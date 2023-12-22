@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Last-Modified" content="0">
+	<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<!-- Scripts -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/menu.css" media="screen" />	
+	<link rel="stylesheet" type="text/css" href="css/index.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/common.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/test.css" media="screen" />
+
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="js/constants.js"></script>
+	<script type="text/javascript" src="js/commonFunctions.js"></script>
+	<script type="text/javascript" src="js/formFunctions.js"></script>
+	<script type="text/javascript" src="js/test.js"></script>
+	<script type="text/javascript" src="js/testStructures.js"></script>
+	<script type="text/javascript" src="js/ajaxTest.js"></script>
+	<script type="text/javascript" src="js/lang.js"></script>
+	<script type="text/javascript" src="js/register.js"></script>
+	<script type="text/javascript" src="js/userManagement.js"></script>
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="Locale/Lang_EN.js"></script>
+	<script type="text/javascript" src="Locale/Lang_ES.js"></script>
+	<script type="text/javascript" src="Locale/Lang_GA.js"></script>
+	<link rel="shortcut icon" type="image/png" href="Resources/icon.png">
+	<title>educenter</title>
+</head>
+
+<body onload="
+(async ()=>{
+    await userRole();
+	loadLang(); 
+	includeFooter(); 
+	setLang('');
+    fillSelectRole();
+})();">
+	<!--MENU-->
+	<div id="topMenu"></div>
+
+	<div class="modal modal3 fade" id="changePass-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true" style="display: none;">
+	</div>
+
+	<div class="test MENSAJE_TEST">Tests</div>
+
+	<div id="accordion">
+
+		<!-- Auth -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link" data-toggle="collapse" href="#collapseAuth"
+					onclick="javascript:cargarTestAutenticaciones()">Autenticacion
+				</a>
+				<img class="iconTab" id="iconoTestAuth" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseAuth" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testAutenticacion">
+				</div>
+			</div>
+		</div>
+
+		<!-- Usuarios -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionUsuariosTest" data-toggle="collapse" href="#collapseUsuario"
+					onclick="javascript:loadUserManagementTest()">Usuario
+				</a>
+				<img class="iconTab" id="iconoTestUsuario" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseUsuario" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testUsuario">
+				</div>
+			</div>
+		</div>
+
+		<!-- Acción-Funcionalidad -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link" data-toggle="collapse" href="#collapseAccionFuncionalidad"
+					onclick="javascript:cargarTestGestionAccionFuncionalidad()">Accion-Funcionalidad
+				</a>
+				<img class="iconTab" id="iconoTestAccionFuncionalidad" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseAccionFuncionalidad" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testAccionFuncionalidad">
+				</div>
+			</div>
+		</div>
+
+		<!-- Rol-Acción-Funcionalidad -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link" data-toggle="collapse" href="#collapseRolAccionFuncionalidad"
+					onclick="javascript:cargarTestGestionRolAccionFuncionalidad()">Rol-Acción-Funcionalidad
+				</a>
+				<img class="iconTab" id="iconoTestRolAccionFuncionalidad" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseRolAccionFuncionalidad" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testRolAccionFuncionalidad">
+				</div>
+			</div>
+		</div>
+
+		<!-- Materias -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionMateriasTest" data-toggle="collapse" href="#collapseMaterias"
+					onclick="javascript:cargarTestGestionMaterias()">Materias
+				</a>
+				<img class="iconTab" id="iconoTestMaterias" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseMaterias" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testMaterias">
+				</div>
+			</div>
+		</div>
+
+		<!-- Curso académico -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionCursoAcademicoTest" data-toggle="collapse"
+				   href="#collapseCursoAcademico"
+				   onclick="javascript:cargarTestCursoAcademico()">CursoAcademico
+
+				</a>
+				<img class="iconTab" id="iconoTestCursoAcademico" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseCursoAcademico" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testCursoAcademico">
+				</div>
+			</div>
+		</div>
+
+		<!-- Trabajos -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionTrabajosTest" data-toggle="collapse"
+				   href="#collapseTrabajos" onclick="javascript:cargarTestGestionTrabajos()">Trabajos
+
+				</a>
+				<img class="iconTab" id="iconoTestTrabajos" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseTrabajos" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testTrabajos">
+				</div>
+			</div>
+		</div>
+
+		<!-- Competencias -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionCompetenciasTest" data-toggle="collapse"
+				   href="#collapseCompetencias" onclick="javascript:cargarTestGestionCompetencias()">Competencias
+
+				</a>
+				<img class="iconTab" id="iconoTestCompetencias" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseCompetencias" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testCompetencias">
+				</div>
+			</div>
+		</div>
+
+		<!-- Entrega -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionEntregaTest" data-toggle="collapse"
+				   href="#collapseEntrega" onclick="javascript:cargarTestGestionEntrega()">Entrega
+
+				</a>
+				<img class="iconTab" id="iconoTestEntrega" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseEntrega" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testEntrega">
+				</div>
+			</div>
+		</div>
+
+		<!-- Criterios -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionCriterioTest" data-toggle="collapse"
+				   href="#collapseCriterio" onclick="javascript:cargarTestGestionCriterio()">Criterio
+
+				</a>
+				<img class="iconTab" id="iconoTestCriterio" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseCriterio" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testCriterio">
+				</div>
+			</div>
+		</div>
+
+		<!-- Criterio-Competencia -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionCriterioCompetenciaTest" data-toggle="collapse"
+				   href="#collapseCriterioCompetencia" onclick="javascript:cargarTestGestionCriterioCompetencia()">Criterio-Competencia
+
+				</a>
+				<img class="iconTab" id="iconoTestCriterioCompetencia" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseCriterioCompetencia" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testCriterioCompetencia">
+				</div>
+			</div>
+		</div>
+
+		<!-- Corrección-Criterio -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionCorreccionCriterioTest" data-toggle="collapse"
+				   href="#collapseCorreccionCriterio" onclick="javascript:cargarTestGestionCorreccionCriterio()">Corrección Criterio
+
+				</a>
+				<img class="iconTab" id="iconoTestCorreccionCriterio" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseCorreccionCriterio" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testCorreccionCriterio">
+				</div>
+			</div>
+		</div>
+
+		<!-- Corrección-Docente -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionCorreccionDocenteTest" data-toggle="collapse"
+				   href="#collapseCorreccionDocente" onclick="javascript:cargarTestGestionCorreccionDocente()">Corrección Docente
+
+				</a>
+				<img class="iconTab" id="iconoTestCorreccionDocente" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseCorreccionDocente" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testCorreccionDocente">
+				</div>
+			</div>
+		</div>
+
+		<!-- Notas-Criterio -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionNotasCriterioTest" data-toggle="collapse"
+				   href="#collapseNotasCriterio" onclick="javascript:cargarTestGestionNotasCriterio()">Notas criterio
+
+				</a>
+				<img class="iconTab" id="iconoTestNotasCriterio" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseNotasCriterio" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testNotasCriterio">
+				</div>
+			</div>
+		</div>
+
+		<!-- Notas-Competencia -->
+		<div class="card">
+			<div class="card-header">
+				<a class="collapsed card-link gestionNotasCompetenciaTest" data-toggle="collapse"
+				   href="#collapseNotasCompetencia" onclick="javascript:cargarTestGestionNotasCompetencia()">Notas competencias
+
+				</a>
+				<img class="iconTab" id="iconoTestNotasCompetencia" src="Resources/failed.png" hidden>
+			</div>
+
+			<div id="collapseNotasCompetencia" class="collapse" data-parent="#accordion">
+				<div class="card-body" id="testNotasCompetencia">
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="modal modal3 fade" id="editarcontrasena-modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+	</div>
+
+	<div class="volver">
+		<div name="btnBack" value="Volver" class="tooltip backIcon">
+			<a href="menu.html">
+				<img class="iconoBack ICONO_VOLVER" src="Resources/home2.png" alt="Volver" />
+				<span class="tooltiptext ICONO_VOLVER"></span>
+			</a>
+		</div>
+	</div>
+
+	<!--MODAL ALERTAS-->
+	<div id="modal" tabindex="-1" role="dialog" style="display:none">
+		<div class="modal-dialog" role="document" id="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<img src="" name="aviso" class="imagenAviso" />
+					<h3 id="modal-title" class="modal-title"></h3>
+				</div>
+				<div id='modal-mensaje' class="modal-body"></div>
+				<div class="modal-footer">
+					<a id="close" href="#" onclick="closeModal('modal');" class="tooltip5">
+						<img class="closeIcon" alt="Cerrar" src="Resources/close.png" />
+						<span class="tooltiptext5 ICONO_CERRAR"></span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="footer"></div>
+</body>
+
+</html>
